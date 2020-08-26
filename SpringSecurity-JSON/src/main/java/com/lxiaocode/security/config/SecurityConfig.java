@@ -1,7 +1,7 @@
 package com.lxiaocode.security.config;
 
 import com.lxiaocode.common.ResponseUtil;
-import com.lxiaocode.security.authentication.JSONAuthenticationFilter;
+import com.lxiaocode.security.authentication.JsonAuthenticationFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,10 +28,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 配置 AuthenticationFilter
         UsernamePasswordAuthenticationFilter authenticationFilter =
-                new JSONAuthenticationFilter();
+                new JsonAuthenticationFilter();
         authenticationFilter.setAuthenticationManager(authenticationManagerBean());
 
-        authenticationFilter.setAuthenticationSuccessHandler((request, response, authentication)->{
+        authenticationFilter.setAuthenticationSuccessHandler((request, response, authentication) -> {
             Map<String, Object> map = new HashMap<String, Object>(3);
             map.put("code", 200);
             map.put("msg", "登陆成功");
@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             ResponseUtil.send(response, map);
         });
 
-        authenticationFilter.setAuthenticationFailureHandler((request, response, exception)->{
+        authenticationFilter.setAuthenticationFailureHandler((request, response, exception) -> {
             Map<String, Object> map = new HashMap<String, Object>(3);
 
             map.put("code", 401);
@@ -62,5 +62,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 添加过滤器
         http.addFilterAt(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // 配置认证异常处理
+        http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+            Map<String, Object> map = new HashMap<String, Object>(3);
+            map.put("code", 401);
+            map.put("message", "尚未登陆");
+            map.put("data", authException.getMessage());
+
+            ResponseUtil.send(response, map);
+        });
     }
 }

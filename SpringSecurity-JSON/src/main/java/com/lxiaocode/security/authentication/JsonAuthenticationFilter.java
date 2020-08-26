@@ -18,13 +18,13 @@ import java.util.Map;
  * @author lixiaofeng
  * @date 2020/8/25 21:42
  */
-public class JSONAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JsonAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
 
-        if (!request.getMethod().equals("POST")) {
+        if (!"POST".equals(request.getMethod())) {
             throw new AuthenticationServiceException(
                     "Authentication method not supported: " + request.getMethod());
         }
