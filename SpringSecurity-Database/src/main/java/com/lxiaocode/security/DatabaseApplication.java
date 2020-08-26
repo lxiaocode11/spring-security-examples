@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author lixiaofeng
- * @date 2020/8/25 21:35
+ * @date 2020/8/26 16:07
  */
 @SpringBootApplication
 @RestController
 @RequestMapping("/")
-public class Application {
+public class DatabaseApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class);
+        SpringApplication.run(DatabaseApplication.class);
     }
 
     @GetMapping("")
