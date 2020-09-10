@@ -8,6 +8,7 @@ import com.lxiaocode.role.mapper.RoleMapper;
 import com.lxiaocode.role.mapper.UserMapper;
 import com.lxiaocode.role.mapper.UserRoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -47,7 +48,7 @@ public class UserService implements UserDetailsService {
         QueryWrapper<UserRole> userRoleWrapper = new QueryWrapper<>();
         userRoleWrapper.eq("user_id", user.getId());
         List<UserRole> userRoles = userRoleMapper.selectList(userRoleWrapper);
-        Set roles = new HashSet();
+        Set<GrantedAuthority> roles = new HashSet<>();
         QueryWrapper<Role> roleWrapper = new QueryWrapper<>();
         for (UserRole ur : userRoles){
             // 设置角色
